@@ -1,0 +1,8 @@
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+bootstrap/.terraform/
+.env
+snowflake_rsa_key.pem
+snowflake_rsa_key.pub
