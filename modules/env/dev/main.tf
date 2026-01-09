@@ -26,6 +26,7 @@ provider "snowflake" {
   role      = var.snowflake_role
   warehouse = var.snowflake_warehouse
   private_key = replace(var.snowflake_private_key, "\\n", "\n")
+  authenticator = "JWT"
 }
 
 resource "random_id" "suffix" {
