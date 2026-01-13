@@ -21,11 +21,11 @@ provider "aws" {
 }
 
 provider "snowflake" {
-  account   = var.snowflake_account
-  user      = var.snowflake_user
-  role      = var.snowflake_role
-  warehouse = var.snowflake_warehouse
-  private_key = replace(var.snowflake_private_key, "\\n", "\n")
+  account       = var.snowflake_account
+  user          = var.snowflake_user
+  role          = var.snowflake_role
+  warehouse     = var.snowflake_warehouse
+  private_key   = replace(var.snowflake_private_key, "\\n", "\n")
   authenticator = "JWT"
 }
 

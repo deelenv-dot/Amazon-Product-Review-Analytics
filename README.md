@@ -61,6 +61,21 @@ You can convert it with:
 cat snowflake_rsa_key.pem | sed ':a;N;$!ba;s/\n/\\n/g'
 ```
 
+## Snowflake S3 integration (two-pass apply)
+The S3 storage integration needs Snowflake-provided values to be added to the IAM trust policy.
+
+1) Run `terraform apply` once to create the integration.
+2) Read the outputs:
+   - `snowflake_integration_iam_user_arn`
+   - `snowflake_integration_external_id`
+3) Add them to your environment:
+```bash
+export TF_VAR_snowflake_iam_user_arn="..."
+export TF_VAR_snowflake_external_id="..."
+```
+4) Run `terraform apply` again to update the IAM trust policy.
+
+
 ## Structure (placeholders)
 - `glue_jobs/` placeholder for Glue scripts
 - `lambda/` placeholder for Lambda code

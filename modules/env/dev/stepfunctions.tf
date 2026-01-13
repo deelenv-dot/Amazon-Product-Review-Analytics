@@ -74,9 +74,9 @@ resource "aws_sfn_state_machine" "glue_pipeline" {
           Payload = {
             status        = "SUCCEEDED"
             message       = "Glue pipeline completed"
-            execution_id  = "$$.Execution.Id"
-            execution_name = "$$.Execution.Name"
-            state_machine = "$$.StateMachine.Name"
+            "execution_id.$"   = "$$.Execution.Id"
+            "execution_name.$" = "$$.Execution.Name"
+            "state_machine.$"  = "$$.StateMachine.Name"
             jobs = [
               aws_glue_job.download_reviews.name,
               aws_glue_job.download_meta.name,
@@ -95,10 +95,10 @@ resource "aws_sfn_state_machine" "glue_pipeline" {
           Payload = {
             status        = "FAILED"
             message       = "Glue pipeline failed"
-            execution_id  = "$$.Execution.Id"
-            execution_name = "$$.Execution.Name"
-            state_machine = "$$.StateMachine.Name"
-            error         = "$.error"
+            "execution_id.$"   = "$$.Execution.Id"
+            "execution_name.$" = "$$.Execution.Name"
+            "state_machine.$"  = "$$.StateMachine.Name"
+            "error.$"          = "$.error"
             jobs = [
               aws_glue_job.download_reviews.name,
               aws_glue_job.download_meta.name,
