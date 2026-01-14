@@ -7,6 +7,8 @@ locals {
 
   reviews_flattened = "flattened/amazon_2023/reviews/"
   meta_flattened    = "flattened/amazon_2023/meta/"
+
+  meta_cleaned_key = "raw/amazon_2023/meta_categories/clean/meta_Amazon_Fashion.jsonl.gz"
 }
 
 resource "aws_glue_job" "download_reviews" {
@@ -55,6 +57,29 @@ resource "aws_glue_job" "download_meta" {
   }
 }
 
+resource "aws_glue_job" "clean_meta" {
+  name     = "capstone-clean-meta-${random_id.suffix.hex}"
+  role_arn = aws_iam_role.glue_job.arn
+
+  command {
+    name            = "pythonshell"
+    python_version  = "3"
+    script_location = "s3://${aws_s3_bucket.raw.bucket}/${aws_s3_object.glue_clean_script.key}"
+  }
+
+  glue_version = "1.0"
+  max_capacity = 1.0
+  timeout      = 2880
+
+  default_arguments = {
+    "--job-language"  = "python"
+    "--TempDir"       = "s3://${aws_s3_bucket.raw.bucket}/tmp/"
+    "--source_bucket" = aws_s3_bucket.raw.bucket
+    "--source_key"    = local.meta_key
+    "--target_key"    = local.meta_cleaned_key
+  }
+}
+
 resource "aws_glue_job" "flatten_reviews" {
   name     = "capstone-flatten-reviews-${random_id.suffix.hex}"
   role_arn = aws_iam_role.glue_job.arn
@@ -94,7 +119,7 @@ resource "aws_glue_job" "flatten_meta" {
   default_arguments = {
     "--job-language"   = "python"
     "--TempDir"        = "s3://${aws_s3_bucket.raw.bucket}/tmp/"
-    "--source_s3_path" = "s3://${aws_s3_bucket.raw.bucket}/${local.meta_key}"
+    "--source_s3_path" = "s3://${aws_s3_bucket.raw.bucket}/${local.meta_cleaned_key}"
     "--target_s3_path" = "s3://${aws_s3_bucket.raw.bucket}/${local.meta_flattened}"
   }
 }

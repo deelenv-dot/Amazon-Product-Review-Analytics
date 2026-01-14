@@ -34,6 +34,21 @@ resource "aws_sfn_state_machine" "glue_pipeline" {
             Next        = "NotifyFailure"
           }
         ]
+        Next = "CleanMeta"
+      }
+      CleanMeta = {
+        Type     = "Task"
+        Resource = "arn:aws:states:::glue:startJobRun.sync"
+        Parameters = {
+          JobName = aws_glue_job.clean_meta.name
+        }
+        Catch = [
+          {
+            ErrorEquals = ["States.ALL"]
+            ResultPath  = "$.error"
+            Next        = "NotifyFailure"
+          }
+        ]
         Next = "FlattenReviews"
       }
       FlattenReviews = {

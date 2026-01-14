@@ -11,3 +11,10 @@ resource "aws_s3_object" "glue_flatten_script" {
   source = "../../../glue_jobs/flatten_jsonl_to_parquet.py"
   etag   = filemd5("../../../glue_jobs/flatten_jsonl_to_parquet.py")
 }
+
+resource "aws_s3_object" "glue_clean_script" {
+  bucket = aws_s3_bucket.raw.id
+  key    = "scripts/glue/clean_jsonl_keys.py"
+  source = "../../../glue_jobs/clean_jsonl_keys.py"
+  etag   = filemd5("../../../glue_jobs/clean_jsonl_keys.py")
+}
