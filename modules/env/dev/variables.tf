@@ -79,3 +79,18 @@ variable "snowflake_schema" {
   type        = string
   default     = "CAPSTONE_AMAZON_RAW"
 }
+
+variable "reviews_url" {
+  description = "Source URL for reviews dataset (jsonl.gz)"
+  type        = string
+}
+
+variable "meta_url" {
+  description = "Source URL for metadata dataset (jsonl.gz)"
+  type        = string
+}
+
+variable "sns_email" {
+  description = "Email address for SNS notifications"
+  type        = string
+}

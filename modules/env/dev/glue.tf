@@ -1,14 +1,14 @@
 locals {
-  reviews_url = "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Amazon_Fashion.jsonl.gz"
-  meta_url    = "https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/meta_categories/meta_Amazon_Fashion.jsonl.gz"
+  reviews_url = var.reviews_url
+  meta_url    = var.meta_url
 
-  reviews_key = "raw/amazon_2023/review_categories/Amazon_Fashion.jsonl.gz"
-  meta_key    = "raw/amazon_2023/meta_categories/meta_Amazon_Fashion.jsonl.gz"
+  reviews_key = "raw/amazon_2023/review_categories/${basename(var.reviews_url)}"
+  meta_key    = "raw/amazon_2023/meta_categories/${basename(var.meta_url)}"
 
   reviews_flattened = "flattened/amazon_2023/reviews/"
   meta_flattened    = "flattened/amazon_2023/meta/"
 
-  meta_cleaned_key = "raw/amazon_2023/meta_categories/clean/meta_Amazon_Fashion.jsonl.gz"
+  meta_cleaned_key = "raw/amazon_2023/meta_categories/clean/${basename(var.meta_url)}"
 }
 
 resource "aws_glue_job" "download_reviews" {

@@ -10,3 +10,4 @@ data/*.json
 data/*.jsonl
 data/*.gz
 lambda/*.zip
+dbt/profiles.yml
