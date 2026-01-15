@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: capstone_raw
+    database: "{{ target.database }}"
+    schema: "{{ target.schema }}"
+    tables:
+      - name: CAPSTONE_AMAZON_REVIEWS_EXT
+        description: "External table for Amazon reviews (raw JSON)"
+      - name: CAPSTONE_AMAZON_META_EXT
+        description: "External table for Amazon metadata (raw JSON)"
