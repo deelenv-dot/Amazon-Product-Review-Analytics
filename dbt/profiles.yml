@@ -1,0 +1,14 @@
+reviews_pipeline_orchestration:
+  outputs:
+    dev:
+      account: CETQJVF-SN29629
+      database: CAPSTONE_AMAZON_DB
+      private_key_passphrase:
+      private_key_path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/snowflake_rsa_key.pem
+      role: ACCOUNTADMIN
+      schema: CAPSTONE_AMAZON_DB.CAPSTONE_AMAZON_RAW
+      threads: 4
+      type: snowflake
+      user: DEELENV
+      warehouse: SNOWFLAKE_LEARNING_WH
+  target: dev

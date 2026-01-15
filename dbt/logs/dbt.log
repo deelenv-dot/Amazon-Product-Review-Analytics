@@ -1,0 +1,159 @@
+[0m16:58:21.270615 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11b7a87a0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11bf04b60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11bf04860>]}
+
+
+============================== 16:58:21.272825 | 668c2f41-233c-4d91-96e1-ab144c560db4 ==============================
+[0m16:58:21.272825 [info ] [MainThread]: Running with dbt=1.11.2
+[0m16:58:21.273095 [debug] [MainThread]: running dbt with arguments {'version_check': 'True', 'target_path': 'None', 'write_json': 'True', 'log_cache_events': 'False', 'log_path': 'logs', 'no_print': 'None', 'use_colors': 'True', 'indirect_selection': 'eager', 'empty': 'None', 'static_parser': 'True', 'cache_selected_only': 'False', 'fail_fast': 'False', 'debug': 'False', 'warn_error': 'None', 'quiet': 'False', 'partial_parse': 'True', 'introspect': 'True', 'send_anonymous_usage_stats': 'True', 'invocation_command': 'dbt init reviews_pipeline_orchestration', 'log_format': 'default', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'printer_width': '80', 'use_experimental_parser': 'False', 'profiles_dir': '/Users/deelen/.dbt'}
+[0m16:58:21.299863 [debug] [MainThread]: Starter project path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m16:58:21.313792 [info ] [MainThread]: 
+Your new dbt project "reviews_pipeline_orchestration" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:58:21.314607 [info ] [MainThread]: Setting up your profile.
+[0m16:58:36.700796 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m16:58:36.701179 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m16:58:36.701309 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m17:00:48.938896 [error] [MainThread]: Encountered an error:
+
+[0m17:00:48.951221 [error] [MainThread]: Traceback (most recent call last):
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/cli/requires.py", line 182, in wrapper
+    result, success = func(*args, **kwargs)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/cli/requires.py", line 128, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/cli/main.py", line 483, in init
+    results = task.run()
+              ^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 346, in run
+    self.setup_profile(profile_name)
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 262, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 179, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 163, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 116, in generate_target_from_input
+    target = self.generate_target_from_input(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/task/init.py", line 129, in generate_target_from_input
+    target[key] = click.prompt(
+                  ^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/click/termui.py", line 171, in prompt
+    value = prompt_func(prompt)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/click/termui.py", line 154, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m17:00:49.004558 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": false, "command_wall_clock_time": 147.76888, "process_in_blocks": "0", "process_kernel_time": 0.174702, "process_mem_max_rss": "113115136", "process_out_blocks": "0", "process_user_time": 0.64286}
+[0m17:00:49.009393 [debug] [MainThread]: Command `dbt init` failed at 17:00:49.009227 after 147.77 seconds
+[0m17:00:49.010330 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11bf04a10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11dd0ae70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11e101070>]}
+[0m17:00:49.010881 [debug] [MainThread]: Flushing usage events
+[0m17:00:50.630244 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:01:10.389272 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1057c85f0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110a089b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110a086e0>]}
+
+
+============================== 17:01:10.391617 | 0977d793-e2a8-4643-85ce-9f9ef30744e1 ==============================
+[0m17:01:10.391617 [info ] [MainThread]: Running with dbt=1.11.2
+[0m17:01:10.391919 [debug] [MainThread]: running dbt with arguments {'static_parser': 'True', 'log_format': 'default', 'write_json': 'True', 'partial_parse': 'True', 'indirect_selection': 'eager', 'debug': 'False', 'invocation_command': 'dbt init reviews_pipeline_orchestration', 'version_check': 'True', 'no_print': 'None', 'send_anonymous_usage_stats': 'True', 'fail_fast': 'False', 'quiet': 'False', 'log_path': 'logs', 'log_cache_events': 'False', 'use_colors': 'True', 'introspect': 'True', 'profiles_dir': '/Users/deelen/.dbt', 'target_path': 'None', 'empty': 'None', 'printer_width': '80', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'warn_error': 'None', 'use_experimental_parser': 'False', 'cache_selected_only': 'False'}
+[0m17:01:10.401053 [info ] [MainThread]: A project called reviews_pipeline_orchestration already exists here.
+[0m17:01:10.403151 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 0.044556793, "process_in_blocks": "0", "process_kernel_time": 0.112487, "process_mem_max_rss": "108838912", "process_out_blocks": "0", "process_user_time": 0.535572}
+[0m17:01:10.403380 [debug] [MainThread]: Command `dbt init` succeeded at 17:01:10.403339 after 0.04 seconds
+[0m17:01:10.403528 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1109d35c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110a6a8d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110a76a20>]}
+[0m17:01:10.403692 [debug] [MainThread]: Flushing usage events
+[0m17:01:10.915240 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:02:55.180360 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106ca4710>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107300c50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107300950>]}
+
+
+============================== 17:02:55.182651 | 220ba035-20f4-4988-b783-afe3d15d82ed ==============================
+[0m17:02:55.182651 [info ] [MainThread]: Running with dbt=1.11.2
+[0m17:02:55.182935 [debug] [MainThread]: running dbt with arguments {'use_experimental_parser': 'False', 'quiet': 'False', 'printer_width': '80', 'write_json': 'True', 'invocation_command': 'dbt init reviews_pipeline_orchestration', 'log_format': 'default', 'log_path': 'logs', 'target_path': 'None', 'send_anonymous_usage_stats': 'True', 'no_print': 'None', 'indirect_selection': 'eager', 'warn_error': 'None', 'use_colors': 'True', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'log_cache_events': 'False', 'empty': 'None', 'version_check': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'introspect': 'True', 'profiles_dir': '/Users/deelen/.dbt', 'fail_fast': 'False', 'debug': 'False'}
+[0m17:02:55.192275 [debug] [MainThread]: Starter project path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/lib/python3.12/site-packages/dbt/include/starter_project
+[0m17:02:55.195850 [info ] [MainThread]: 
+Your new dbt project "reviews_pipeline_orchestration" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m17:02:55.196018 [info ] [MainThread]: Setting up your profile.
+[0m17:02:58.295919 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m17:02:58.296163 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m17:02:58.296292 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m17:04:41.146245 [info ] [MainThread]: Profile reviews_pipeline_orchestration written to /Users/deelen/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m17:04:41.156371 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 106.00627, "process_in_blocks": "0", "process_kernel_time": 0.174989, "process_mem_max_rss": "131481600", "process_out_blocks": "0", "process_user_time": 0.631679}
+[0m17:04:41.160346 [debug] [MainThread]: Command `dbt init` succeeded at 17:04:41.160141 after 106.01 seconds
+[0m17:04:41.161577 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107d2d550>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107b67530>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107f69f70>]}
+[0m17:04:41.162218 [debug] [MainThread]: Flushing usage events
+[0m17:04:41.969865 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:04:53.282883 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10792f6b0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107e04c50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107e04980>]}
+
+
+============================== 17:04:53.285224 | b5dd7ac1-4714-480e-88f0-8e48cb573039 ==============================
+[0m17:04:53.285224 [info ] [MainThread]: Running with dbt=1.11.2
+[0m17:04:53.285502 [debug] [MainThread]: running dbt with arguments {'empty': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'profiles_dir': '/Users/deelen/.dbt', 'cache_selected_only': 'False', 'partial_parse': 'True', 'log_cache_events': 'False', 'version_check': 'True', 'introspect': 'True', 'debug': 'False', 'log_format': 'default', 'write_json': 'True', 'quiet': 'False', 'indirect_selection': 'eager', 'log_path': 'logs', 'use_experimental_parser': 'False', 'warn_error': 'None', 'no_print': 'None', 'printer_width': '80', 'static_parser': 'True', 'target_path': 'None', 'send_anonymous_usage_stats': 'True', 'fail_fast': 'False', 'use_colors': 'True', 'invocation_command': 'dbt debug'}
+[0m17:04:53.294898 [info ] [MainThread]: dbt version: 1.11.2
+[0m17:04:53.295117 [info ] [MainThread]: python version: 3.12.3
+[0m17:04:53.295250 [info ] [MainThread]: python path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/bin/python3.12
+[0m17:04:53.295369 [info ] [MainThread]: os info: macOS-26.2-arm64-arm-64bit
+[0m17:04:53.461758 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m17:04:53.462012 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m17:04:53.462139 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m17:04:53.485803 [info ] [MainThread]: Using profiles dir at /Users/deelen/.dbt
+[0m17:04:53.486006 [info ] [MainThread]: Using profiles.yml file at /Users/deelen/.dbt/profiles.yml
+[0m17:04:53.486139 [info ] [MainThread]: Using dbt_project.yml file at /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_project.yml
+[0m17:04:53.486298 [error] [MainThread]: Encountered an error:
+Internal Error
+  Profile should not be None if loading profile completed
+[0m17:04:53.488373 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.23673305, "process_in_blocks": "0", "process_kernel_time": 0.132084, "process_mem_max_rss": "132972544", "process_out_blocks": "0", "process_user_time": 0.654111}
+[0m17:04:53.488717 [debug] [MainThread]: Command `dbt debug` failed at 17:04:53.488674 after 0.24 seconds
+[0m17:04:53.488874 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107e04c50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1089a2db0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108069d00>]}
+[0m17:04:53.489029 [debug] [MainThread]: Flushing usage events
+[0m17:04:54.027124 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m17:06:01.408619 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x105f1d9d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106a71310>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106c20ad0>]}
+
+
+============================== 17:06:01.411522 | 8f475dcf-ec87-4da4-83a5-4d21bce17bff ==============================
+[0m17:06:01.411522 [info ] [MainThread]: Running with dbt=1.11.2
+[0m17:06:01.411789 [debug] [MainThread]: running dbt with arguments {'partial_parse': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'send_anonymous_usage_stats': 'True', 'no_print': 'None', 'profiles_dir': '/Users/deelen/.dbt', 'cache_selected_only': 'False', 'log_format': 'default', 'debug': 'False', 'write_json': 'True', 'use_experimental_parser': 'False', 'invocation_command': 'dbt debug', 'log_cache_events': 'False', 'introspect': 'True', 'fail_fast': 'False', 'printer_width': '80', 'log_path': 'logs', 'indirect_selection': 'eager', 'empty': 'None', 'quiet': 'False', 'version_check': 'True', 'target_path': 'None', 'warn_error': 'None', 'use_colors': 'True', 'static_parser': 'True'}
+[0m17:06:01.421149 [info ] [MainThread]: dbt version: 1.11.2
+[0m17:06:01.421355 [info ] [MainThread]: python version: 3.12.3
+[0m17:06:01.421474 [info ] [MainThread]: python path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_venv/bin/python3.12
+[0m17:06:01.421589 [info ] [MainThread]: os info: macOS-26.2-arm64-arm-64bit
+[0m17:06:01.589054 [debug] [MainThread]: Snowflake adapter: Setting snowflake.connector to ERROR (file logging only)
+[0m17:06:01.589284 [debug] [MainThread]: Snowflake adapter: Setting botocore to ERROR (file logging only)
+[0m17:06:01.589406 [debug] [MainThread]: Snowflake adapter: Setting boto3 to ERROR (file logging only)
+[0m17:06:01.612337 [info ] [MainThread]: Using profiles dir at /Users/deelen/.dbt
+[0m17:06:01.612529 [info ] [MainThread]: Using profiles.yml file at /Users/deelen/.dbt/profiles.yml
+[0m17:06:01.612670 [info ] [MainThread]: Using dbt_project.yml file at /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_project.yml
+[0m17:06:01.612819 [error] [MainThread]: Encountered an error:
+Internal Error
+  Profile should not be None if loading profile completed
+[0m17:06:01.614909 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": false, "command_wall_clock_time": 0.23644388, "process_in_blocks": "0", "process_kernel_time": 0.144758, "process_mem_max_rss": "132792320", "process_out_blocks": "0", "process_user_time": 0.626441}
+[0m17:06:01.615235 [debug] [MainThread]: Command `dbt debug` failed at 17:06:01.615192 after 0.24 seconds
+[0m17:06:01.615394 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10785f200>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10743ae70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078ebe60>]}
+[0m17:06:01.615557 [debug] [MainThread]: Flushing usage events
+[0m17:06:03.345937 [debug] [MainThread]: An error was encountered while trying to flush usage events
