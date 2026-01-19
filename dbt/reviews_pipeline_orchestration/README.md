@@ -1,15 +1,22 @@
-Welcome to your new dbt project!
+# dbt Project: reviews_pipeline_orchestration
 
-### Using the starter project
+## Layers
+- **sources**: External tables from Snowflake
+- **staging** (`CAPSTONE_AMAZON_STG`): parsed fields from raw VARIANT
+- **marts** (`CAPSTONE_AMAZON_MART`): aggregated analytics tables
 
-Try running the following commands:
-- dbt run
-- dbt test
+## Models
+- `stg_reviews` — review fields
+- `stg_meta` — metadata fields
+- `mart_avg_rating_by_store_year` — avg rating + count by store/year, verified purchases only
 
+## Run
+```bash
+dbt debug --profiles-dir /Users/deelen/.dbt
+dbt run -s staging --profiles-dir /Users/deelen/.dbt
+dbt run -s marts --profiles-dir /Users/deelen/.dbt
+```
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+## Notes
+- `on-run-start` refreshes external tables.
+- Custom `generate_schema_name` macro prevents schema concatenation.

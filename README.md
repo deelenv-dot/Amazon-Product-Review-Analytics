@@ -1,53 +1,26 @@
-# Capstone Project 2 — Amazon Product Review Analytics (Terraform Skeleton)
+# Capstone Project — Amazon Product Review Analytics
 
-This repo mirrors the weekly-project structure and is ready for Terraform CI/CD. It currently provisions:
-- S3 bucket (unique name)
-- Snowflake database + schema
-- Sample object upload to S3 (placeholder file)
+End-to-end pipeline that ingests Amazon Reviews + Metadata, flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
 
-## 1) Bootstrap remote state
+## Pipeline overview
+- **Ingest**: Glue Python Shell downloads JSONL.GZ from public URLs to S3 `raw/`.
+- **Clean meta**: Glue Python Shell normalizes metadata keys and removes duplicates.
+- **Flatten**: Glue Spark job writes Parquet to `flattened/`.
+- **Orchestrate**: Step Functions runs download → clean meta → flatten.
+- **Warehouse**: Snowflake external tables point to Parquet in S3.
+- **Transform**: dbt staging + marts, scheduled by Airflow.
+
+## Terraform quickstart
+1) Bootstrap remote state (once):
 ```bash
 cd bootstrap
 terraform init
 terraform plan
 terraform apply -auto-approve
 ```
+Update `modules/env/dev/backend.tf` with outputs.
 
-Record the `bucket_name` and `dynamodb_table` outputs, then update:
-`modules/env/dev/backend.tf`.
-
-## 2) GitHub Secrets
-Add these secrets in GitHub:
-- AWS_ACCESS_KEY_ID
-- AWS_SECRET_ACCESS_KEY
-- AWS_REGION
-- SNOWFLAKE_ACCOUNT
-- SNOWFLAKE_USER
-- SNOWFLAKE_PRIVATE_KEY
-- SNOWFLAKE_ROLE
-- SNOWFLAKE_WAREHOUSE
-
-## 3) Run Terraform locally (dev)
-```bash
-cd modules/env/dev
-terraform init
-terraform plan
-terraform apply
-```
-
-## Local credentials (best practice)
-Do not hardcode secrets in code. Use environment variables locally and GitHub Secrets in CI.
-
-Option A: export variables in your shell
-```bash
-export TF_VAR_snowflake_account="..."
-export TF_VAR_snowflake_user="..."
-export TF_VAR_snowflake_private_key="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
-export TF_VAR_snowflake_role="ACCOUNTADMIN"
-export TF_VAR_snowflake_warehouse="..."
-```
-
-Option B: use a local `.env` file (not committed)
+2) Local env:
 ```bash
 cp .env.example .env
 set -a
@@ -55,32 +28,63 @@ source .env
 set +a
 ```
 
-Note: if you store the private key in `.env` or GitHub Secrets, it must be a single line with `\n` line breaks.
-You can convert it with:
+3) Apply infra:
 ```bash
-cat snowflake_rsa_key.pem | sed ':a;N;$!ba;s/\n/\\n/g'
+cd modules/env/dev
+terraform init
+terraform plan
+terraform apply
 ```
 
-## Snowflake S3 integration (two-pass apply)
-The S3 storage integration needs Snowflake-provided values to be added to the IAM trust policy.
+## GitHub Actions (alternative to local Terraform)
+Use the workflows to provision and destroy infra in CI.
 
-1) Run `terraform apply` once to create the integration.
-2) Read the outputs:
+Workflows:
+- `terraform-bootstrap.yml` — creates S3/DynamoDB backend
+- `terraform.yml` — plans/applies the main stack
+- `terraform-destroy.yml` — destroys the stack (requires `DESTROY` confirmation)
+
+Required GitHub Secrets:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+- `SNOWFLAKE_ACCOUNT`
+- `SNOWFLAKE_USER`
+- `SNOWFLAKE_PRIVATE_KEY`
+- `SNOWFLAKE_ROLE`
+- `SNOWFLAKE_WAREHOUSE`
+- `SNOWFLAKE_IAM_USER_ARN` (after first apply)
+- `SNOWFLAKE_EXTERNAL_ID` (after first apply)
+
+Note: run the bootstrap workflow first. Then run the main workflow twice to set the Snowflake integration trust policy (see two-pass apply above).
+
+## Required TF vars
+Set in `.env` (or shell) to avoid prompts:
+- `TF_VAR_reviews_url`
+- `TF_VAR_meta_url`
+- `TF_VAR_sns_email`
+- Snowflake key-pair vars and storage integration outputs
+
+## Snowflake S3 integration (two-pass apply)
+1) `terraform apply`
+2) Read outputs:
    - `snowflake_integration_iam_user_arn`
    - `snowflake_integration_external_id`
-3) Add them to your environment:
+3) Export and re-apply:
 ```bash
 export TF_VAR_snowflake_iam_user_arn="..."
 export TF_VAR_snowflake_external_id="..."
+terraform apply
 ```
-4) Run `terraform apply` again to update the IAM trust policy.
 
+## Structure
+- `glue_jobs/` Glue scripts
+- `lambda/` SNS publishing Lambda
+- `stepfunctions/` State machine
+- `dbt/` dbt project + Docker image
+- `airflow/` Airflow stack + DAGs
+- `docs/` diagrams, screenshots, notes
 
-## Structure (placeholders)
-- `glue_jobs/` placeholder for Glue scripts
-- `lambda/` placeholder for Lambda code
-- `stepfunctions/` placeholder for state machine definitions
-- `dbt/` placeholder for dbt project
-- `airflow/` placeholder for DAGs/compose
-- `.github/workflows/` CI workflows
-- `docs/` architecture and setup notes
+## Notes
+- External tables are raw JSON (VARIANT). dbt stages parse fields and build marts.
+- dbt runs `ALTER EXTERNAL TABLE ... REFRESH` at start via macro.

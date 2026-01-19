@@ -71,7 +71,7 @@ default_args = {
 
 
 @dag(
-    dag_id="capstone_dbt_polling_debug",
+    dag_id="capstone_dbt_polling",
     description="Poll Step Functions and run dbt after success.",
     schedule="*/15 * * * *",
     start_date=datetime(2024, 1, 1),
@@ -79,7 +79,7 @@ default_args = {
     default_args=default_args,
     tags=["dbt", "amazon-reviews", "polling"],
 )
-def capstone_dbt_polling_debug():
+def capstone_dbt_polling():
     wait_for_success = PythonSensor(
         task_id="wait_for_state_machine_success",
         python_callable=latest_execution_succeeded,
@@ -116,4 +116,4 @@ def capstone_dbt_polling_debug():
     wait_for_success >> dbt_debug >> dbt_deps >> dbt_run >> dbt_test >> dbt_docs
 
 
-dag = capstone_dbt_polling_debug()
+dag = capstone_dbt_polling()
