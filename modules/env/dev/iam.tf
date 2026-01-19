@@ -73,6 +73,7 @@ data "aws_iam_policy_document" "stepfunctions_glue" {
     resources = [
       aws_glue_job.download_reviews.arn,
       aws_glue_job.download_meta.arn,
+      aws_glue_job.clean_meta.arn,
       aws_glue_job.flatten_reviews.arn,
       aws_glue_job.flatten_meta.arn
     ]

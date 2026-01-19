@@ -3,8 +3,7 @@ reviews_pipeline_orchestration:
     dev:
       account: CETQJVF-SN29629
       database: CAPSTONE_AMAZON_DB
-      private_key_passphrase:
-      private_key_path: /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/snowflake_rsa_key.pem
+      private_key: "{{ env_var('SNOWFLAKE_PRIVATE_KEY') }}"
       role: ACCOUNTADMIN
       schema: CAPSTONE_AMAZON_RAW
       threads: 4

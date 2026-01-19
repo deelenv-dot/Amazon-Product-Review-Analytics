@@ -1,0 +1,5 @@
+{"timestamp":"2026-01-19T18:05:45.248911Z","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2026-01-19T18:05:45.249634Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/dbt_pipeline.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-01-19T18:05:45.387788Z","level":"info","event":"Poking callable: <function latest_execution_succeeded at 0xffff863c02c0>","logger":"airflow.task.operators.airflow.providers.standard.sensors.python.PythonSensor","filename":"python.py","lineno":79}
+{"timestamp":"2026-01-19T18:05:45.392498Z","level":"info","event":"Found credentials in environment variables.","logger":"botocore.credentials","filename":"credentials.py","lineno":1224}
+{"timestamp":"2026-01-19T18:05:46.645238Z","level":"info","event":"Success criteria met. Exiting.","logger":"airflow.task.operators.airflow.providers.standard.sensors.python.PythonSensor","filename":"sensor.py","lineno":250}

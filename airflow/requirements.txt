@@ -1,0 +1,7 @@
+pandas
+snowflake-connector-python
+snowflake-sqlalchemy
+apache-airflow-providers-snowflake
+sqlalchemy
+psycopg2-binary
+requests
