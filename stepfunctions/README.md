@@ -7,3 +7,6 @@ State machine runs:
 4) Flatten reviews
 5) Flatten meta
 6) Notify SNS via Lambda (success/failure)
+
+## Screenshot
+![Step Functions graph](../assets/stepfunctions_graph.png)

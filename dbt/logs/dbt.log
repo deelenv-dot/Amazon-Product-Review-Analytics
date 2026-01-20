@@ -157,3 +157,19 @@ Internal Error
 [0m17:06:01.615394 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10785f200>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10743ae70>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1078ebe60>]}
 [0m17:06:01.615557 [debug] [MainThread]: Flushing usage events
 [0m17:06:03.345937 [debug] [MainThread]: An error was encountered while trying to flush usage events
+[0m21:28:36.899930 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106224260>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109309160>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x109308e00>]}
+
+
+============================== 21:28:36.902394 | 55e7f709-348b-4b4c-b3c2-66f59de67d10 ==============================
+[0m21:28:36.902394 [info ] [MainThread]: Running with dbt=1.11.2
+[0m21:28:36.902679 [debug] [MainThread]: running dbt with arguments {'introspect': 'True', 'quiet': 'False', 'empty': 'None', 'invocation_command': 'dbt docs generate', 'log_format': 'default', 'static_parser': 'True', 'log_path': 'logs', 'fail_fast': 'False', 'indirect_selection': 'eager', 'warn_error': 'None', 'send_anonymous_usage_stats': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'use_experimental_parser': 'False', 'target_path': 'None', 'debug': 'False', 'log_cache_events': 'False', 'version_check': 'True', 'no_print': 'None', 'cache_selected_only': 'False', 'profiles_dir': '/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt', 'write_json': 'True', 'printer_width': '80', 'use_colors': 'True', 'partial_parse': 'True'}
+[0m21:28:36.902963 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/dbt/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m21:28:36.936244 [debug] [MainThread]: Resource report: {"command_name": "generate", "command_success": false, "command_wall_clock_time": 0.06571025, "process_in_blocks": "0", "process_kernel_time": 0.089472, "process_mem_max_rss": "106954752", "process_out_blocks": "0", "process_user_time": 0.541936}
+[0m21:28:36.936622 [debug] [MainThread]: Command `dbt docs generate` failed at 21:28:36.936571 after 0.07 seconds
+[0m21:28:36.936799 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x108d28e00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x106224260>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x10930aae0>]}
+[0m21:28:36.936968 [debug] [MainThread]: Flushing usage events
+[0m21:28:37.884230 [debug] [MainThread]: An error was encountered while trying to flush usage events

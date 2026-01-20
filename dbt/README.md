@@ -5,20 +5,20 @@ This folder builds a dbt Docker image that bundles the project and reads Snowfla
 ## Build
 ```bash
 cd dbt
-docker build -t <dockerhub-username>/capstone-dbt:latest .
+docker build -t deelenv/amazon-reviews-dbt:latest .
 ```
 
 ## Test
 ```bash
 docker run --rm -it \
   -e SNOWFLAKE_PRIVATE_KEY="$(../scripts/encode_private_key.sh ../snowflake_rsa_key.pem)" \
-  <dockerhub-username>/capstone-dbt:latest \
+  deelenv/amazon-reviews-dbt:latest \
   dbt debug --project-dir /app/reviews_pipeline_orchestration --profiles-dir /root/.dbt
 ```
 
 ## Push
 ```bash
-docker push <dockerhub-username>/capstone-dbt:latest
+docker push deelenv/amazon-reviews-dbt:latest
 ```
 
 ## Notes

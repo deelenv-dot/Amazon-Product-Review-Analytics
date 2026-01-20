@@ -12,11 +12,14 @@
 
 ## Run
 ```bash
-dbt debug --profiles-dir /Users/deelen/.dbt
-dbt run -s staging --profiles-dir /Users/deelen/.dbt
-dbt run -s marts --profiles-dir /Users/deelen/.dbt
+dbt debug
+dbt run -s staging
+dbt run -s marts
 ```
 
 ## Notes
 - `on-run-start` refreshes external tables.
 - Custom `generate_schema_name` macro prevents schema concatenation.
+
+## dbt lineage graph
+![dbt lineage](../../assets/dbt_lineage_graph.png)

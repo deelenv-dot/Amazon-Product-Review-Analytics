@@ -9,14 +9,16 @@ from airflow.providers.standard.sensors.python import PythonSensor
 
 from airflow.sdk import dag
 from airflow.providers.docker.operators.docker import DockerOperator
+from docker.types import Mount
 
-DOCKER_IMAGE = os.getenv("DBT_DOCKER_IMAGE", "deelenv/amazon-reviews-dbt:latest")
+DOCKER_IMAGE = os.getenv("DBT_DOCKER_IMAGE", "")
 PROJECT_DIR = "/app/reviews_pipeline_orchestration"
 STATE_MACHINE_ARN = os.getenv("STATE_MACHINE_ARN", "")
 AWS_REGION = os.getenv("AWS_REGION", "")
+DBT_DOCS_DIR = os.getenv("DBT_DOCS_DIR", "")
 
 
-def make_dbt_task(task_id: str, dbt_cmd: str) -> DockerOperator:
+def make_dbt_task(task_id: str, dbt_cmd: str, mounts: list[Mount] | None = None) -> DockerOperator:
     return DockerOperator(
         task_id=task_id,
         image=DOCKER_IMAGE,
@@ -26,6 +28,7 @@ def make_dbt_task(task_id: str, dbt_cmd: str) -> DockerOperator:
         docker_url="unix://var/run/docker.sock",
         api_version="auto",
         network_mode="bridge",
+        mounts=mounts or [],
         environment={
             "SNOWFLAKE_PRIVATE_KEY": os.getenv("SNOWFLAKE_PRIVATE_KEY", ""),
         },
@@ -110,7 +113,8 @@ def capstone_dbt_polling():
 
     dbt_docs = make_dbt_task(
         task_id="dbt_docs",
-        dbt_cmd="dbt docs generate --project-dir /app/reviews_pipeline_orchestration --profiles-dir /root/.dbt",
+        dbt_cmd="dbt docs generate --project-dir /app/reviews_pipeline_orchestration --profiles-dir /root/.dbt --target-path /dbt_docs",
+        mounts=[Mount(source=DBT_DOCS_DIR, target="/dbt_docs", type="bind")] if DBT_DOCS_DIR else [],
     )
 
     wait_for_success >> dbt_debug >> dbt_deps >> dbt_run >> dbt_test >> dbt_docs

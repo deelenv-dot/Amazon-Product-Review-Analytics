@@ -20,6 +20,7 @@ These must be available to the scheduler:
 - `STATE_MACHINE_ARN`
 - `SNOWFLAKE_PRIVATE_KEY`
 - `DBT_DOCKER_IMAGE` (optional; defaults to `deelenv/amazon-reviews-dbt:latest`)
+- `DBT_DOCS_DIR` (host path to persist dbt docs, e.g. `/Users/deelen/Desktop/Data_Engineering/Projects/Capstone/Amazon-Product-Review-Analytics/airflow/dbt_docs`)
 
 ## Run locally
 ```bash
@@ -34,3 +35,4 @@ docker compose up -d
 ## Notes
 - The polling DAG runs every 15 minutes; adjust `schedule` as needed.
 - The scheduler must have AWS creds to call Step Functions.
+- dbt docs are written to `DBT_DOCS_DIR` (mounted into the dbt container at `/dbt_docs`).
