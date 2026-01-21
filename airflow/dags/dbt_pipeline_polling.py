@@ -76,7 +76,7 @@ default_args = {
 @dag(
     dag_id="capstone_dbt_polling",
     description="Poll Step Functions and run dbt after success.",
-    schedule="*/15 * * * *",
+    schedule="*/60 * * * *",
     start_date=datetime(2024, 1, 1),
     catchup=False,
     default_args=default_args,
@@ -86,8 +86,8 @@ def capstone_dbt_polling():
     wait_for_success = PythonSensor(
         task_id="wait_for_state_machine_success",
         python_callable=latest_execution_succeeded,
-        poke_interval=60,
-        timeout=60 * 60,
+        poke_interval=60 * 5,
+        timeout=60 * 55,
         mode="reschedule",
     )
 

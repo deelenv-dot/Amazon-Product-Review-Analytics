@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_reviews
+    columns:
+      - name: user_id
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: parent_asin
+        tests:
+          - not_null:
+              config:
+                severity: warn
+  - name: stg_meta
+    columns:
+      - name: rating_number
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: store
+        tests:
+          - not_null:
+              config:
+                severity: warn
+      - name: parent_asin
+        tests:
+          - not_null:
+              config:
+                severity: warn

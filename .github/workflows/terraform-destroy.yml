@@ -20,8 +20,8 @@ jobs:
       TF_VAR_snowflake_private_key: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
       TF_VAR_snowflake_iam_user_arn: ${{ secrets.SNOWFLAKE_IAM_USER_ARN }}
       TF_VAR_snowflake_external_id: ${{ secrets.SNOWFLAKE_EXTERNAL_ID }}
-      TF_VAR_reviews_url: ${{ secrets.REVIEWS_URL }}
-      TF_VAR_meta_url: ${{ secrets.META_URL }}
+      TF_VAR_reviews_url: ${{ vars.REVIEWS_URL }}
+      TF_VAR_meta_url: ${{ vars.META_URL }}
       TF_VAR_sns_email: ${{ secrets.SNS_EMAIL }}
 
     steps:

@@ -8,6 +8,7 @@ with reviews as (
     left join {{ ref('stg_meta') }} m
       on r.parent_asin = m.parent_asin
     where r.verified_purchase = true
+      and store is not null
 ),
 
 final as (

@@ -1,6 +1,6 @@
 # Capstone Project — Amazon Product Review Analytics
 
-End-to-end pipeline that ingests Amazon Reviews + Metadata, flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
+End-to-end pipeline that ingests [Amazon Reviews + Metadata](https://amazon-reviews-2023.github.io), flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
 
 ## Architecture
 - **Ingest**: Glue Python Shell downloads JSONL.GZ to S3 `raw/`.
@@ -59,6 +59,7 @@ Workflows:
 - `terraform-bootstrap.yml` — creates S3/DynamoDB backend
 - `terraform.yml` — plans/applies the main stack (apply when input `APPLY`)
 - `terraform-destroy.yml` — destroys the stack (requires `DESTROY` confirmation)
+- `stepfunctions-run.yml` — triggers the Step Functions pipeline from GitHub
 
 Required GitHub Secrets:
 - `AWS_ACCESS_KEY_ID`
@@ -71,9 +72,12 @@ Required GitHub Secrets:
 - `SNOWFLAKE_WAREHOUSE`
 - `SNOWFLAKE_IAM_USER_ARN` (after first apply)
 - `SNOWFLAKE_EXTERNAL_ID` (after first apply)
+- `SNS_EMAIL`
+- `STATE_MACHINE_ARN`
+
+Required GitHub Variables:
 - `REVIEWS_URL`
 - `META_URL`
-- `SNS_EMAIL`
 
 Note: run bootstrap first. Run the main workflow twice to complete the Snowflake integration trust policy.
 
@@ -145,8 +149,8 @@ dbt docs lineage graph:
 DAGs:
 - `capstone_dbt_polling_debug` (`airflow/dags/dbt_pipeline.py`)
   - Connect to dockerized dbt image via DockerOperator.
-  - Polls Step Functions every 15 minutes and runs dbt tasks on success.
-  - Uses Airflow Variable `capstone_latest_execution_arn` to avoid reruns.
+  - Initiates a new run every hour, within which polls Step Functions every 5 minutes and runs dbt tasks on success.
+  - Uses Airflow Variable `capstone_latest_execution_arn` to ensure the new successful execution was read to avoid reruns.
 
 Required env vars (in `airflow/.env`):
 - `AWS_ACCESS_KEY_ID`
@@ -162,6 +166,12 @@ Run locally:
 cd airflow
 docker compose up -d
 ```
+
+```bash
+cd DBT_DOCS_DIR               # use the host path
+python3 -m http.server 8088   # you can choose other port number
+```
+
 Restart after env changes:
 ```bash
 docker compose down

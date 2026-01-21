@@ -8,6 +8,7 @@ with reviews as (
     left join CAPSTONE_AMAZON_DB.CAPSTONE_AMAZON_STG.stg_meta m
       on r.parent_asin = m.parent_asin
     where r.verified_purchase = true
+      and store is not null
 ),
 
 final as (
