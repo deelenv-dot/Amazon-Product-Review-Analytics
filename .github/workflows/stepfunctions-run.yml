@@ -1,0 +1,69 @@
+name: Run Step Functions Pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      wait_for_completion:
+        description: "Wait for execution to finish (true/false)"
+        required: false
+        default: "false"
+
+jobs:
+  run_step_functions:
+    runs-on: ubuntu-latest
+    env:
+      STATE_MACHINE_ARN: ${{ secrets.STATE_MACHINE_ARN }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Start execution
+        id: start
+        run: |
+          set -euo pipefail
+          if [ -z "${STATE_MACHINE_ARN}" ]; then
+            echo "STATE_MACHINE_ARN secret is missing."
+            exit 1
+          fi
+
+          EXECUTION_NAME="github-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          EXECUTION_ARN=$(aws stepfunctions start-execution \
+            --state-machine-arn "${STATE_MACHINE_ARN}" \
+            --name "${EXECUTION_NAME}" \
+            --query "executionArn" \
+            --output text)
+
+          echo "execution_arn=${EXECUTION_ARN}" >> "$GITHUB_OUTPUT"
+          echo "Started execution: ${EXECUTION_ARN}"
+
+      - name: Wait for completion
+        if: github.event.inputs.wait_for_completion == 'true'
+        run: |
+          set -euo pipefail
+          EXECUTION_ARN="${{ steps.start.outputs.execution_arn }}"
+          echo "Polling execution: ${EXECUTION_ARN}"
+
+          while true; do
+            STATUS=$(aws stepfunctions describe-execution \
+              --execution-arn "${EXECUTION_ARN}" \
+              --query "status" \
+              --output text)
+
+            if [ "${STATUS}" = "SUCCEEDED" ]; then
+              echo "Execution succeeded."
+              exit 0
+            fi
+
+            if [ "${STATUS}" = "FAILED" ] || [ "${STATUS}" = "TIMED_OUT" ] || [ "${STATUS}" = "ABORTED" ]; then
+              echo "Execution ended with status: ${STATUS}"
+              exit 1
+            fi
+
+            sleep 20
+          done

@@ -13,3 +13,8 @@
 {"timestamp":"2026-01-21T11:10:03.333362Z","level":"info","event":"Poking callable: <function latest_execution_succeeded at 0xffff734520c0>","logger":"airflow.task.operators.airflow.providers.standard.sensors.python.PythonSensor","filename":"python.py","lineno":79}
 {"timestamp":"2026-01-21T11:10:03.338161Z","level":"info","event":"Found credentials in environment variables.","logger":"botocore.credentials","filename":"credentials.py","lineno":1224}
 {"timestamp":"2026-01-21T11:10:03.940755Z","level":"info","event":"Rescheduling task, marking task as UP_FOR_RESCHEDULE","logger":"task","filename":"task_runner.py","lineno":953}
+{"timestamp":"2026-01-21T11:15:05.132056Z","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2026-01-21T11:15:05.132677Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/dbt_pipeline_polling.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-01-21T11:15:05.248293Z","level":"info","event":"Poking callable: <function latest_execution_succeeded at 0xffff73452340>","logger":"airflow.task.operators.airflow.providers.standard.sensors.python.PythonSensor","filename":"python.py","lineno":79}
+{"timestamp":"2026-01-21T11:15:05.253039Z","level":"info","event":"Found credentials in environment variables.","logger":"botocore.credentials","filename":"credentials.py","lineno":1224}
+{"timestamp":"2026-01-21T11:15:05.957159Z","level":"info","event":"Rescheduling task, marking task as UP_FOR_RESCHEDULE","logger":"task","filename":"task_runner.py","lineno":953}
