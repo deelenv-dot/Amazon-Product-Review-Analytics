@@ -47,7 +47,7 @@ jobs:
         run: terraform plan -input=false
         working-directory: modules/env/dev
 
-      - name: Terraform Apply
-        if: github.event.inputs.apply == 'APPLY'
-        run: terraform apply -auto-approve -input=false
-        working-directory: modules/env/dev
+      # - name: Terraform Apply
+      #   if: github.event.inputs.apply == 'APPLY'
+      #   run: terraform apply -auto-approve -input=false
+      #   working-directory: modules/env/dev

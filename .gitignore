@@ -9,5 +9,4 @@ snowflake_rsa_key.pub
 data/*.json
 data/*.jsonl
 data/*.gz
-lambda/*.zip
 dbt/profiles.yml
