@@ -174,6 +174,7 @@ cd airflow
 docker compose up -d
 ```
 
+Serve dbt docs:
 ```bash
 cd DBT_DOCS_DIR               # use the host path
 python3 -m http.server 8088   # you can choose other port number
