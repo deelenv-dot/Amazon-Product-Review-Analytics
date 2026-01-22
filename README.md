@@ -1,16 +1,19 @@
 # Capstone Project — Amazon Product Review Analytics
 
-End-to-end pipeline that creates infrastructure, ingests [Amazon Reviews + Metadata](https://amazon-reviews-2023.github.io), flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
+End-to-end automated pipeline that creates infrastructure, ingests [Amazon Reviews + Metadata](https://amazon-reviews-2023.github.io), flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, orchestrates with Airflow, and visualizes with Quick Suite.
 
 ## Architecture
 - **Create infrastructure**: Terraform creates all objects in AWS and Snowflake.
+- **Trigger**: GitHub workflow triggers the jobs in AWS.
 - **Ingest**: Glue Python Shell downloads JSONL.GZ to S3 `raw/`.
 - **Clean meta**: Glue Python Shell normalizes metadata keys and dedupes.
 - **Flatten**: Glue Spark job writes Parquet to `flattened/`.
 - **Orchestrate Glue**: Step Function runs download → clean meta → flatten.
 - **Warehouse**: Snowflake external tables point to Parquet in S3.
+- **Orchestrate dbt**: Airflow detects Step Function execution and runs dbt.
 - **Transform**: dbt connects to source tables, creates staging and analysis-ready marts model.
-- **Orchestrate dbt**: Airflow polls Step Functions and runs dbt.
+- **Visualize**: Amazon Quick Suite connects to Snowflake and builds a dashboard.
+
 
 ## Infrastructure (Terraform)
 
@@ -99,7 +102,7 @@ Flow:
 3) Flatten reviews + meta to `flattened/`
 
 ## Step Functions
-State machine runs:
+State machine run:
 1) Download reviews
 2) Download meta
 3) Clean meta
@@ -111,6 +114,40 @@ State machine runs:
 
 ## Lambda
 `lambda/publish_sns.py` publishes Step Functions outcomes to SNS.
+
+## Airflow
+
+DAGs:
+- `capstone_dbt_polling` (`airflow/dags/dbt_pipeline_polling.py`)
+  - Connects to dockerized dbt image via DockerOperator.
+  - Initiates a new run every hour, within which polls Step Functions every 5 minutes and runs dbt tasks on success.
+  - Uses Airflow Variable `capstone_latest_execution_arn` to ensure the new successful execution was read to avoid reruns.
+- `capstone_dbt` (`airflow/dags/dbt_pipeline_trigger.py`)
+  - Version without polling, requires manual trigger.
+
+Required env vars (in `airflow/.env`):
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+- `STATE_MACHINE_ARN`
+- `SNOWFLAKE_PRIVATE_KEY`
+- `DBT_DOCKER_IMAGE`
+- `DBT_DOCS_DIR` (host path for the mounted volume of dbt docs)
+
+Run locally:
+```bash
+cd airflow
+docker compose up -d
+```
+
+Restart after env changes:
+```bash
+docker compose down
+docker compose up -d
+```
+
+DAG graph:
+![Airflow DAG graph](assets/capstone_dbt_polling_debug-graph.png)
 
 ## dbt
 
@@ -146,45 +183,22 @@ dbt run -s staging
 dbt run -s marts
 ```
 
-dbt docs lineage graph:
-![dbt lineage](assets/dbt_lineage_graph.png)
-
-## Airflow
-
-DAGs:
-- `capstone_dbt_polling` (`airflow/dags/dbt_pipeline_polling.py`)
-  - Connects to dockerized dbt image via DockerOperator.
-  - Initiates a new run every hour, within which polls Step Functions every 5 minutes and runs dbt tasks on success.
-  - Uses Airflow Variable `capstone_latest_execution_arn` to ensure the new successful execution was read to avoid reruns.
-- `capstone_dbt` (`airflow/dags/dbt_pipeline_trigger.py`)
-  - Version without polling, requires manual trigger.
-
-Required env vars (in `airflow/.env`):
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_REGION`
-- `STATE_MACHINE_ARN`
-- `SNOWFLAKE_PRIVATE_KEY`
-- `DBT_DOCKER_IMAGE`
-- `DBT_DOCS_DIR` (host path for the mounted volume of dbt docs)
-
-Run locally:
-```bash
-cd airflow
-docker compose up -d
-```
-
 Serve dbt docs:
 ```bash
 cd DBT_DOCS_DIR               # use the host path
 python3 -m http.server 8088   # you can choose other port number
 ```
 
-Restart after env changes:
+dbt docs lineage graph:
+![dbt lineage](assets/dbt_lineage_graph.png)
+
+## Quick Suite
+
+Create a dataset, an analysis and a dashboard from the Marts table in Snowflake. Note: private key should be decoded to PKC8 format:
+
 ```bash
-docker compose down
-docker compose up -d
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in snowflake_rsa_key.pem -out snowflake_pkcs8_key.pem -nocrypt
 ```
 
-DAG graph:
-![Airflow DAG graph](assets/capstone_dbt_polling_debug-graph.png)
+End dashboard example:
+![Airflow DAG graph](assets/quicksight.png)
