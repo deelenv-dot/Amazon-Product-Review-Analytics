@@ -1,17 +1,20 @@
 # Capstone Project — Amazon Product Review Analytics
 
-End-to-end pipeline that ingests [Amazon Reviews + Metadata](https://amazon-reviews-2023.github.io), flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
+End-to-end pipeline that creates infrastructure, ingests [Amazon Reviews + Metadata](https://amazon-reviews-2023.github.io), flattens to Parquet, lands in S3, exposes Snowflake external tables, transforms with dbt, and orchestrates with Airflow.
 
 ## Architecture
+- **Create infrastructure**: Terraform creates all objects in AWS and Snowflake.
 - **Ingest**: Glue Python Shell downloads JSONL.GZ to S3 `raw/`.
 - **Clean meta**: Glue Python Shell normalizes metadata keys and dedupes.
 - **Flatten**: Glue Spark job writes Parquet to `flattened/`.
-- **Orchestrate**: Step Functions runs download → clean meta → flatten.
+- **Orchestrate Glue**: Step Function runs download → clean meta → flatten.
 - **Warehouse**: Snowflake external tables point to Parquet in S3.
-- **Transform**: dbt staging + marts.
+- **Transform**: dbt connects to source tables, creates staging and analysis-ready marts model.
 - **Orchestrate dbt**: Airflow polls Step Functions and runs dbt.
 
 ## Infrastructure (Terraform)
+
+![Infra graph](assets/infra.png)
 
 ### Bootstrap remote state
 ```bash
@@ -81,6 +84,9 @@ Required GitHub Variables:
 
 Note: run bootstrap first. Run the main workflow twice to complete the Snowflake integration trust policy.
 
+## Pipeline overview
+![Pipeline graph](assets/pipeline.png)
+
 ## Glue Jobs
 Scripts:
 - `glue_jobs/download_from_url.py` — downloads dataset files to S3 if not present.
@@ -101,7 +107,6 @@ State machine runs:
 5) Flatten meta
 6) Notify SNS via Lambda (success/failure)
 
-Screenshot:
 ![Step Functions graph](assets/stepfunctions_graph.png)
 
 ## Lambda
@@ -147,10 +152,12 @@ dbt docs lineage graph:
 ## Airflow
 
 DAGs:
-- `capstone_dbt_polling_debug` (`airflow/dags/dbt_pipeline.py`)
-  - Connect to dockerized dbt image via DockerOperator.
+- `capstone_dbt_polling` (`airflow/dags/dbt_pipeline_polling.py`)
+  - Connects to dockerized dbt image via DockerOperator.
   - Initiates a new run every hour, within which polls Step Functions every 5 minutes and runs dbt tasks on success.
   - Uses Airflow Variable `capstone_latest_execution_arn` to ensure the new successful execution was read to avoid reruns.
+- `capstone_dbt` (`airflow/dags/dbt_pipeline_trigger.py`)
+  - Version without polling, requires manual trigger.
 
 Required env vars (in `airflow/.env`):
 - `AWS_ACCESS_KEY_ID`

@@ -1,0 +1,5 @@
+{"timestamp":"2026-01-22T13:16:21.580183Z","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager","filename":"manager.py","lineno":179}
+{"timestamp":"2026-01-22T13:16:21.580613Z","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/dbt_pipeline_polling.py","logger":"airflow.models.dagbag.DagBag","filename":"dagbag.py","lineno":593}
+{"timestamp":"2026-01-22T13:16:21.732606Z","level":"info","event":"Poking callable: <function latest_execution_succeeded at 0xffff998fd9e0>","logger":"airflow.task.operators.airflow.providers.standard.sensors.python.PythonSensor","filename":"python.py","lineno":79}
+{"timestamp":"2026-01-22T13:16:21.739273Z","level":"info","event":"Found credentials in environment variables.","logger":"botocore.credentials","filename":"credentials.py","lineno":1224}
+{"timestamp":"2026-01-22T13:16:22.445069Z","level":"info","event":"Rescheduling task, marking task as UP_FOR_RESCHEDULE","logger":"task","filename":"task_runner.py","lineno":953}
