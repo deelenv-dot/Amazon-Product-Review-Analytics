@@ -93,3 +93,4 @@ resource "aws_iam_role_policy" "stepfunctions_glue" {
   role   = aws_iam_role.stepfunctions.id
   policy = data.aws_iam_policy_document.stepfunctions_glue.json
 }
+# IAM roles and policies for Glue, Step Functions, and Snowflake access.

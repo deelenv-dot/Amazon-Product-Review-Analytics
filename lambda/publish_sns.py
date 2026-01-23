@@ -10,6 +10,7 @@ def handler(event, context):
         raise RuntimeError("SNS_TOPIC_ARN is not set")
 
     sns = boto3.client("sns")
+    # Publish the Step Functions execution payload for visibility in email/SNS.
     status = event.get("status", "UNKNOWN")
     subject = f"Capstone Glue Pipeline: {status}"
     message = json.dumps(event, indent=2, sort_keys=True)

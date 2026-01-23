@@ -10,6 +10,7 @@ import boto3
 
 
 def normalize_key(key):
+    # Normalize to a stable, lowercase, underscore-only key for Spark friendliness.
     key = key.strip().lower()
     key = re.sub(r"[^a-z0-9]+", "_", key)
     key = re.sub(r"_+", "_", key)
@@ -23,6 +24,7 @@ def normalize_object(obj):
         out = {}
         for k, v in obj.items():
             base = normalize_key(str(k))
+            # De-dupe collisions from normalized keys by suffixing a counter.
             if base in seen:
                 seen[base] += 1
                 key = f"{base}__dup_{seen[base]}"

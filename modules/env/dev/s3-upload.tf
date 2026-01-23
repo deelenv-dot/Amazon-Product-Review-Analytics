@@ -18,3 +18,4 @@ resource "aws_s3_object" "glue_clean_script" {
   source = "../../../glue_jobs/clean_jsonl_keys.py"
   etag   = filemd5("../../../glue_jobs/clean_jsonl_keys.py")
 }
+# S3 buckets and object uploads for Glue scripts.

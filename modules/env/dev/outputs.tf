@@ -12,3 +12,4 @@ output "snowflake_schema" {
   value       = snowflake_schema.capstone_schema.name
   description = "Snowflake schema created"
 }
+# Outputs needed for Snowflake/AWS integration handoff.

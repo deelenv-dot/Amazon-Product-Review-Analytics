@@ -49,3 +49,4 @@ resource "aws_lambda_function" "publish_sns" {
     }
   }
 }
+# Lambda function that publishes Step Functions results to SNS.

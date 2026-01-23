@@ -123,3 +123,4 @@ resource "aws_glue_job" "flatten_meta" {
     "--target_s3_path" = "s3://${aws_s3_bucket.raw.bucket}/${local.meta_flattened}"
   }
 }
+# Glue jobs for download, clean, and flatten steps.

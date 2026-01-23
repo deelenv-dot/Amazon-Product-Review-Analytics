@@ -63,3 +63,4 @@ resource "aws_s3_bucket_versioning" "raw" {
     status = "Enabled"
   }
 }
+# Terraform providers and shared settings.

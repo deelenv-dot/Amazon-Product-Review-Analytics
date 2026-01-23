@@ -14,6 +14,7 @@ def main():
     glue_context = GlueContext(sc)
     spark = glue_context.spark_session
 
+    # Read JSONL from S3 and write a flattened Parquet dataset for Snowflake external tables.
     df = spark.read.json(source_s3_path)
     df.write.mode("overwrite").parquet(target_s3_path)
 

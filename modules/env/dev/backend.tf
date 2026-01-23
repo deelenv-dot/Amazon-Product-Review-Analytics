@@ -7,3 +7,4 @@ terraform {
     encrypt        = true
   }
 }
+# Remote state configuration (S3 + DynamoDB lock).

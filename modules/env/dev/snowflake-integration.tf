@@ -128,3 +128,4 @@ output "snowflake_integration_external_id" {
   value       = snowflake_storage_integration.s3_int.storage_aws_external_id
   description = "Use this value to update snowflake_external_id and IAM trust policy"
 }
+# Snowflake storage integration, stage, and external tables for S3 Parquet.

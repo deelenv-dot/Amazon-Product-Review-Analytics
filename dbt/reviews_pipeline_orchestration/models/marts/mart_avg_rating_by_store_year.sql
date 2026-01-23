@@ -1,3 +1,4 @@
+-- Aggregate verified reviews by store and year for reporting.
 with reviews as (
     select
         r.parent_asin,

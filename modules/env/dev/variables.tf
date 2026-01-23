@@ -94,3 +94,4 @@ variable "sns_email" {
   description = "Email address for SNS notifications"
   type        = string
 }
+# Input variables for the environment.

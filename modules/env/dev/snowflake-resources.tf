@@ -8,3 +8,4 @@ resource "snowflake_schema" "capstone_schema" {
   name     = upper(var.snowflake_schema)
   comment  = "Schema for capstone raw data"
 }
+# Core Snowflake database, schema, and warehouse resources.

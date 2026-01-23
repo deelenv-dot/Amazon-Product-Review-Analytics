@@ -1,3 +1,4 @@
+-- Parse raw review VARIANT and normalize timestamps into seconds.
 with source_data as (
     select
         coalesce(raw, value) as raw_variant

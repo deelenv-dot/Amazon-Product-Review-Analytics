@@ -1,3 +1,4 @@
+-- Parse raw metadata VARIANT into typed columns.
 with source_data as (
     select
         coalesce(raw, value) as raw_variant

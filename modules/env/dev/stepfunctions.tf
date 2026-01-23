@@ -127,3 +127,4 @@ resource "aws_sfn_state_machine" "glue_pipeline" {
     }
   })
 }
+# State machine to orchestrate Glue jobs and SNS notifications.

@@ -18,6 +18,7 @@ AWS_REGION = os.getenv("AWS_REGION", "")
 DBT_DOCS_DIR = os.getenv("DBT_DOCS_DIR", "")
 
 
+# Helper to standardize dbt task execution inside the Docker image.
 def make_dbt_task(task_id: str, dbt_cmd: str, mounts: list[Mount] | None = None) -> DockerOperator:
     return DockerOperator(
         task_id=task_id,
@@ -35,6 +36,7 @@ def make_dbt_task(task_id: str, dbt_cmd: str, mounts: list[Mount] | None = None)
     )
 
 
+# Track the most recent successful execution to avoid reruns in later polls.
 def latest_execution_succeeded() -> bool:
     if not STATE_MACHINE_ARN:
         raise ValueError("STATE_MACHINE_ARN is not set")

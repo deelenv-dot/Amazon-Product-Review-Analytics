@@ -7,6 +7,7 @@ import boto3
 
 
 def download_to_file(url, dest_path):
+    # Stream download to keep memory usage predictable on large files.
     with urllib.request.urlopen(url) as resp, open(dest_path, "wb") as out:
         while True:
             chunk = resp.read(1024 * 1024)
@@ -24,6 +25,7 @@ def main():
     s3 = boto3.client("s3")
     existing = s3.list_objects_v2(Bucket=s3_bucket, Prefix=s3_key, MaxKeys=1)
     if existing.get("KeyCount", 0) > 0:
+        # Idempotency guard: skip re-downloading if the target key exists.
         print(f"Skipping download; s3://{s3_bucket}/{s3_key} already exists.")
         return
 
